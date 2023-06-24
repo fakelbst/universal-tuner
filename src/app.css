@@ -1,0 +1,26 @@
+:root {
+  color-scheme: light dark;
+  color: #FFD369;
+  background-color: #222831; 
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  place-items: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #7286D3;
+    background-color: #FAF7F0;
+  }
+}
