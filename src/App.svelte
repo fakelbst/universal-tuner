@@ -3,6 +3,7 @@
   let colorScheme = 'light'
 
   function handleSwitch() {
+    document.body.classList.toggle('theme-light')
     colorScheme = colorScheme === 'light' ? 'dark' : 'light'
   }
 </script>

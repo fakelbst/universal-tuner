@@ -1,7 +1,6 @@
 :root {
-  color-scheme: light dark;
-  color: #FFD369;
-  background-color: #222831; 
+  --color: #FFD369;
+  --background-color: #222831; 
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,11 +15,12 @@ body {
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  color: var(--color);
+  background-color: var(--background-color);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #7286D3;
-    background-color: #FAF7F0;
-  }
+.theme-light {
+  --color: #7286D3;
+  --background-color: #FAF7F0;
 }
+
