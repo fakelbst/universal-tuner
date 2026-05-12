@@ -49,6 +49,7 @@ test('maps live pitch input to an in-tune guitar string', async () => {
 
   expect(result.current.state.activeStringId).toBe('guitar-a2')
   expect(result.current.state.status).toBe('in-tune')
+  expect(result.current.state.centsOffset).toBe(0)
 })
 
 test('maps live pitch input against the selected instrument', async () => {
@@ -82,4 +83,27 @@ test('plays the selected reference note in reference mode', async () => {
 
   expect(engine.playReferenceTone).toHaveBeenCalledWith(440, 'ukulele')
   expect(result.current.state.displayNote).toBe('A4')
+})
+
+test('locks tracking to the selected manual string', async () => {
+  const engine = createFakeEngine()
+  const { result } = renderHook(() => useTunerController(engine))
+
+  await act(async () => {
+    await result.current.enableMicrophone()
+  })
+
+  act(() => {
+    result.current.setTrackingMode('manual')
+    result.current.selectManualString('guitar-d3')
+  })
+
+  act(() => {
+    engine.emitPitch(110)
+  })
+
+  expect(result.current.state.trackingMode).toBe('manual')
+  expect(result.current.state.activeStringId).toBe('guitar-d3')
+  expect(result.current.state.displayNote).toBe('D3')
+  expect(result.current.state.status).toBe('tune-up')
 })

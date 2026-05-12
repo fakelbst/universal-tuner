@@ -28,10 +28,41 @@ test('records an in-tune live pitch match', () => {
     type: 'pitch/matched',
     stringId: 'guitar-d3',
     note: 'D3',
+    centsOffset: 0,
     direction: 'in-tune',
   })
 
   expect(next.activeStringId).toBe('guitar-d3')
   expect(next.status).toBe('in-tune')
   expect(next.displayNote).toBe('D3')
+  expect(next.centsOffset).toBe(0)
+})
+
+test('enters manual tracking with the selected string', () => {
+  const next = tunerReducer(initialTunerState, {
+    type: 'tracking/set',
+    trackingMode: 'manual',
+    stringId: 'guitar-e2',
+    note: 'E2',
+  })
+
+  expect(next.trackingMode).toBe('manual')
+  expect(next.activeStringId).toBe('guitar-e2')
+  expect(next.displayNote).toBe('E2')
+})
+
+test('returns to listening when switching from reference back to tune', () => {
+  const listeningState = {
+    ...initialTunerState,
+    permission: 'granted' as const,
+    status: 'reference' as const,
+    mode: 'reference' as const,
+  }
+
+  const next = tunerReducer(listeningState, {
+    type: 'mode/set',
+    mode: 'tune',
+  })
+
+  expect(next.status).toBe('listening')
 })

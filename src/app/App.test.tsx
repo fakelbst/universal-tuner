@@ -15,7 +15,6 @@ test('renders the tuner shell in tune mode by default', () => {
     'aria-pressed',
     'false',
   )
-  expect(
-    screen.getByRole('button', { name: 'Enable Microphone' }),
-  ).toBeInTheDocument()
+  expect(screen.getByText('Microphone')).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: 'Enable Mic' })).toBeInTheDocument()
 })

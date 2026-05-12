@@ -10,8 +10,10 @@ export default function App() {
       instrument={controller.instrument}
       instruments={controller.instruments}
       onEnableMicrophone={controller.enableMicrophone}
+      onSelectManualString={controller.selectManualString}
       onSetInstrument={controller.setInstrument}
       onSetMode={controller.setMode}
+      onSetTrackingMode={controller.setTrackingMode}
       onPlayReferenceString={controller.playReferenceString}
       onToggleTheme={controller.toggleTheme}
     />
