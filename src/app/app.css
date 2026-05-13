@@ -37,17 +37,24 @@ button {
   --bg-shell: rgba(255, 255, 255, 0.48);
   --bg-panel: rgba(255, 255, 255, 0.84);
   --bg-panel-strong: rgba(255, 255, 255, 0.94);
+  --control-shell: rgba(236, 240, 238, 0.9);
+  --control-surface: rgba(250, 252, 251, 0.96);
+  --control-selected-start: rgba(231, 235, 233, 0.98);
+  --control-selected-end: rgba(221, 226, 223, 0.94);
+  --control-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  --panel-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  --control-contrast: #161a1d;
   --text: #161a1d;
   --muted: #6c7476;
   --border: rgba(27, 34, 35, 0.1);
   --border-strong: rgba(27, 34, 35, 0.16);
   --shadow: 0 20px 40px rgba(53, 67, 65, 0.08);
   --string: #7d8586;
-  --string-shadow: rgba(19, 163, 139, 0.2);
+  --string-shadow: rgba(93, 125, 134, 0.14);
   --track: rgba(28, 37, 37, 0.08);
-  --active: #11b39a;
-  --accent: #d99d39;
-  --danger: #bf5e49;
+  --active: #5d7d86;
+  --accent: #ab8a59;
+  --danger: #98685d;
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto auto minmax(320px, 1fr) auto auto;
@@ -65,17 +72,24 @@ button {
   --bg-shell: rgba(32, 38, 35, 0.72);
   --bg-panel: rgba(29, 35, 33, 0.88);
   --bg-panel-strong: rgba(35, 42, 39, 0.95);
+  --control-shell: rgba(36, 42, 39, 0.88);
+  --control-surface: rgba(40, 47, 43, 0.96);
+  --control-selected-start: rgba(218, 223, 220, 0.92);
+  --control-selected-end: rgba(194, 201, 197, 0.86);
+  --control-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  --panel-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  --control-contrast: #191d1b;
   --text: #f2efe6;
   --muted: #98a39e;
   --border: rgba(255, 255, 255, 0.09);
   --border-strong: rgba(255, 255, 255, 0.14);
   --shadow: 0 22px 44px rgba(0, 0, 0, 0.28);
   --string: #76807a;
-  --string-shadow: rgba(57, 200, 170, 0.24);
+  --string-shadow: rgba(140, 171, 178, 0.2);
   --track: rgba(255, 255, 255, 0.08);
-  --active: #39c8aa;
-  --accent: #ebaf49;
-  --danger: #d37c68;
+  --active: #8cabb2;
+  --accent: #c2a06c;
+  --danger: #c18a7b;
   background:
     radial-gradient(circle at top, rgba(50, 59, 55, 0.62), rgba(20, 24, 22, 0) 26%),
     linear-gradient(180deg, #1a201d 0%, #141816 38%, #111512 100%);
@@ -97,7 +111,7 @@ button {
 
 .brand-lockup {
   display: grid;
-  gap: 6px;
+  gap: 12px;
 }
 
 .brand-lockup h1,
@@ -116,7 +130,6 @@ button {
   letter-spacing: -0.045em;
 }
 
-.eyebrow,
 .instrument-label,
 .info-label {
   color: var(--muted);
@@ -129,29 +142,62 @@ button {
 .toolbar {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.control-cluster {
+  display: grid;
+  gap: 8px;
+}
+
+.toolbar-cluster {
+  justify-items: end;
+}
+
+.theme-control {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  margin-left: 4px;
+  padding-left: 18px;
+}
+
+.theme-control::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 7px;
+  width: 1px;
+  height: 20px;
+  background: var(--border-strong);
+}
+
+.control-label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .segmented-group {
-  display: inline-grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(76px, max-content);
-  gap: 6px;
-  padding: 4px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--bg-panel);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(18px);
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .segmented-group button,
-.theme-button,
-.panel-action {
-  min-height: 46px;
-  border: 1px solid transparent;
-  border-radius: 10px;
+.theme-button {
+  min-height: 34px;
+  border: 0;
+  border-radius: 0;
   background: transparent;
   color: var(--text);
   transition:
@@ -169,28 +215,78 @@ button {
 }
 
 .segmented-group button {
-  padding: 0 16px;
-  font-weight: 600;
+  min-height: 0;
+  padding: 0 0 7px;
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  color: color-mix(in srgb, var(--text) 76%, var(--muted));
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
-.segmented-group button[aria-pressed='true'],
-.theme-button,
-.panel-action {
-  border-color: var(--border-strong);
-  background: var(--bg-panel-strong);
-  box-shadow: var(--shadow);
+.segmented-group button:hover,
+.segmented-group button:focus-visible {
+  border-bottom-color: color-mix(in srgb, var(--text) 18%, transparent);
+  background: transparent;
+  color: var(--text);
 }
 
 .segmented-group button[aria-pressed='true'] {
-  box-shadow:
-    inset 0 -2px 0 var(--active),
-    var(--shadow);
+  border-bottom-color: var(--active);
+  background: transparent;
+  color: var(--text);
+  box-shadow: none;
 }
 
 .theme-button {
-  min-width: 74px;
-  padding: 0 18px;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 0;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--text) 72%, var(--muted));
+  box-shadow: none;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.theme-button:hover,
+.theme-button:focus-visible {
+  color: var(--text);
+  background: color-mix(in srgb, var(--control-shell) 58%, transparent);
+}
+
+.theme-button:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--active) 32%, transparent);
+}
+
+.segmented-group-instrument {
+  gap: 22px;
+}
+
+.segmented-group-instrument button {
+  font-size: 1rem;
+}
+
+.segmented-group-mode {
+  gap: 16px;
+}
+
+.segmented-group-mode button {
+  font-size: 0.88rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .note-lockup {
@@ -265,23 +361,24 @@ button {
 }
 
 .string-button:focus-visible .string-note {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
+  outline: none;
+  box-shadow: inset 0 -2px 0 var(--accent);
 }
 
 .string-note {
   display: grid;
   place-items: center;
-  min-width: 44px;
-  min-height: 38px;
-  padding: 0 10px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--bg-panel-strong);
-  box-shadow: var(--shadow);
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  min-width: 34px;
+  min-height: 0;
+  padding: 0 2px 7px;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .string-line {
@@ -299,16 +396,16 @@ button {
 }
 
 .string-button[data-active='true'] .string-note {
-  border-color: color-mix(in srgb, var(--active) 62%, var(--border));
+  border-color: var(--active);
   color: var(--active);
 }
 
 .string-button[data-active='true'] .string-line {
-  width: 4px;
+  width: 3px;
   background: linear-gradient(180deg, color-mix(in srgb, var(--active) 38%, white), var(--active));
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--active) 34%, transparent),
-    0 0 30px var(--string-shadow);
+    0 0 0 1px color-mix(in srgb, var(--active) 22%, transparent),
+    0 0 16px var(--string-shadow);
 }
 
 .pitch-meter {
@@ -340,54 +437,66 @@ button {
 
 .pitch-track {
   position: relative;
-  min-height: 28px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background:
-    linear-gradient(90deg, rgba(191, 94, 73, 0.12), rgba(255, 255, 255, 0) 34%, rgba(17, 179, 154, 0.12) 100%),
-    var(--bg-panel);
-  box-shadow: var(--shadow);
+  min-height: 24px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   overflow: hidden;
 }
 
 .pitch-track-glow {
   position: absolute;
-  inset: 4px;
-  border-radius: inherit;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transform: translateY(-50%);
   background:
-    linear-gradient(90deg, rgba(191, 94, 73, 0.12), rgba(255, 255, 255, 0) 36%, rgba(17, 179, 154, 0.12));
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--text) 8%, transparent),
+      color-mix(in srgb, var(--text) 2%, transparent) 22%,
+      color-mix(in srgb, var(--active) 8%, transparent) 50%,
+      color-mix(in srgb, var(--text) 2%, transparent) 78%,
+      color-mix(in srgb, var(--text) 8%, transparent)
+    );
 }
 
 .pitch-track-center {
   position: absolute;
-  top: 4px;
-  bottom: 4px;
+  top: 3px;
+  bottom: 3px;
   left: 50%;
-  width: 2px;
-  border-radius: 999px;
+  width: 1px;
+  border-radius: 0;
   transform: translateX(-50%);
-  background: color-mix(in srgb, var(--text) 22%, transparent);
+  background: color-mix(in srgb, var(--active) 64%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--active) 14%, transparent);
 }
 
 .pitch-marker {
   position: absolute;
-  top: 3px;
-  bottom: 3px;
+  top: 4px;
+  bottom: 4px;
   left: var(--pitch-position, 50%);
-  width: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.78);
-  border-radius: 999px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--active) 36%, white), var(--active));
-  box-shadow:
-    0 8px 20px rgba(17, 179, 154, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  width: 6px;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-panel-strong) 82%, white),
+    color-mix(in srgb, var(--active) 38%, var(--control-shell))
+  );
+  box-shadow: 0 0 14px color-mix(in srgb, var(--active) 14%, transparent);
   transform: translateX(-50%);
   transition: left 140ms ease-out;
 }
 
 .pitch-track[data-has-signal='false'] .pitch-marker {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(200, 205, 206, 0.94));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.54);
+  background: color-mix(in srgb, var(--control-shell) 82%, var(--bg-panel-strong));
+  box-shadow: none;
+  opacity: 0.72;
 }
 
 .pitch-caption {
@@ -400,31 +509,31 @@ button {
 
 .control-deck {
   display: grid;
-  gap: 16px;
+  gap: 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-strong);
 }
 
 .info-card {
   display: grid;
-  gap: 16px;
-  padding: 18px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0)),
-    var(--bg-panel);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .info-card-header {
   display: flex;
   gap: 12px;
-  align-items: start;
+  align-items: baseline;
   justify-content: space-between;
 }
 
 .info-value {
-  font-size: 1.55rem;
+  color: var(--text);
+  font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: -0.04em;
 }
@@ -432,62 +541,61 @@ button {
 .info-pill {
   display: inline-flex;
   align-items: center;
-  min-height: 34px;
-  padding: 0 12px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--bg-panel-strong);
+  min-height: 0;
+  padding: 0 0 3px;
+  border: 0;
+  border-bottom: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
   white-space: nowrap;
-}
-
-.info-card[data-tone='ready'] .info-value,
-.info-card[data-tone='ready'] .info-pill {
-  color: var(--active);
-}
-
-.info-card[data-tone='attention'] .info-value,
-.info-card[data-tone='attention'] .info-pill {
-  color: var(--accent);
-}
-
-.info-card[data-tone='muted'] .info-value,
-.info-card[data-tone='muted'] .info-pill {
-  color: var(--danger);
 }
 
 .info-copy {
   color: var(--muted);
-  font-size: 0.98rem;
+  font-size: 0.95rem;
   line-height: 1.55;
 }
 
 .panel-action {
-  width: 100%;
-  padding: 0 18px;
-  background: var(--text);
-  color: var(--bg);
-  font-weight: 800;
-  letter-spacing: 0.01em;
+  width: auto;
+  max-width: 100%;
+  min-width: 148px;
+  min-height: 34px;
+  justify-self: start;
+  padding: 0 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--control-selected-start) 72%, transparent),
+    color-mix(in srgb, var(--control-selected-end) 58%, transparent)
+  );
+  color: color-mix(in srgb, var(--control-contrast) 92%, var(--muted));
+  font-size: 0.86rem;
+  font-weight: 700;
+  box-shadow: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .panel-action:disabled {
   cursor: default;
   transform: none;
-  opacity: 0.62;
+  opacity: 0.56;
 }
 
 .segmented-group-inline {
   width: 100%;
-  grid-auto-columns: 1fr;
+  gap: 24px;
 }
 
 .segmented-group-inline button {
-  width: 100%;
+  width: auto;
 }
 
 .status-footer {
@@ -518,12 +626,44 @@ button {
 
   .control-deck {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    align-items: start;
+  }
+
+  .info-card + .info-card {
+    padding-left: 28px;
+    border-left: 1px solid var(--border);
   }
 }
 
 @media (max-width: 759px) {
   .segmented-group {
-    grid-auto-columns: minmax(66px, 1fr);
+    gap: 14px;
+  }
+
+  .toolbar {
+    gap: 14px;
+  }
+
+  .toolbar-cluster {
+    justify-items: start;
+  }
+
+  .theme-control {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .theme-control::before {
+    display: none;
+  }
+
+  .segmented-group-instrument {
+    gap: 18px;
+  }
+
+  .segmented-group-mode {
+    gap: 14px;
   }
 
   .string-field {
@@ -531,9 +671,8 @@ button {
   }
 
   .string-note {
-    min-width: 38px;
-    min-height: 34px;
-    font-size: 1.1rem;
+    min-width: 28px;
+    font-size: 1rem;
   }
 
   .string-line {
@@ -546,5 +685,15 @@ button {
 
   .info-card-header {
     flex-direction: column;
+  }
+
+  .segmented-group-inline {
+    gap: 18px;
+  }
+
+  .info-card + .info-card {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
   }
 }

@@ -214,49 +214,55 @@ export function TunerScreen({
     <main ref={rootRef} className="app-shell" data-theme={state.theme}>
       <header className="control-bar">
         <div className="brand-lockup">
-          <p className="eyebrow">Practice</p>
           <h1>Universal Tuner</h1>
+
+          <div className="control-cluster">
+            <p className="control-label">Instrument</p>
+            <div className="segmented-group segmented-group-instrument" role="group" aria-label="Instrument">
+              {instruments.map((entry) => (
+                <button
+                  key={entry.id}
+                  type="button"
+                  aria-pressed={entry.id === instrument.id}
+                  onClick={() => onSetInstrument(entry.id)}
+                >
+                  {entry.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="toolbar">
-          <div className="segmented-group" role="group" aria-label="Instrument">
-            {instruments.map((entry) => (
+          <div className="control-cluster toolbar-cluster">
+            <div className="segmented-group segmented-group-mode" role="group" aria-label="Mode">
               <button
-                key={entry.id}
                 type="button"
-                aria-pressed={entry.id === instrument.id}
-                onClick={() => onSetInstrument(entry.id)}
+                aria-pressed={state.mode === 'tune'}
+                onClick={() => void onSetMode('tune')}
               >
-                {entry.label}
+                Tune
               </button>
-            ))}
+              <button
+                type="button"
+                aria-pressed={state.mode === 'reference'}
+                onClick={() => void onSetMode('reference')}
+              >
+                Reference
+              </button>
+            </div>
           </div>
 
-          <div className="segmented-group" role="group" aria-label="Mode">
+          <div className="theme-control">
             <button
               type="button"
-              aria-pressed={state.mode === 'tune'}
-              onClick={() => void onSetMode('tune')}
+              className="theme-button"
+              onClick={onToggleTheme}
+              aria-label={state.theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
             >
-              Tune
-            </button>
-            <button
-              type="button"
-              aria-pressed={state.mode === 'reference'}
-              onClick={() => void onSetMode('reference')}
-            >
-              Reference
+              {state.theme === 'light' ? 'Dark' : 'Light'}
             </button>
           </div>
-
-          <button
-            type="button"
-            className="theme-button"
-            onClick={onToggleTheme}
-            aria-label="Toggle theme"
-          >
-            {state.theme === 'light' ? 'Dark' : 'Light'}
-          </button>
         </div>
       </header>
 
