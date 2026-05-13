@@ -133,3 +133,9 @@ dist
 # Local planning and product notes
 docs/
 PRODUCT.md
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
