@@ -1,0 +1,18 @@
+{
+  "name": "Universal Tuner",
+  "short_name": "Tuner",
+  "description": "A fast, mobile-first tuner for guitar, bass, and ukulele.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#141816",
+  "theme_color": "#edf1ef",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
