@@ -27,6 +27,7 @@ export function useTunerController(engine?: AudioEngine) {
   const stateRef = useRef(state)
   const streamRef = useRef<MediaStream | null>(null)
   const stopListeningRef = useRef<(() => void) | null>(null)
+  const automaticStringLockRef = useRef<string | null>(null)
   const resolvedEngine = useMemo(() => engine ?? createBrowserAudioEngine(), [engine])
   const instruments = useMemo(() => instrumentOrder.map(getInstrumentDefinition), [])
   const instrument = useMemo(
@@ -45,11 +46,17 @@ export function useTunerController(engine?: AudioEngine) {
 
   const handlePitch = useCallback((pitchHz: number | null) => {
     if (pitchHz == null) {
+      automaticStringLockRef.current = null
       dispatch({ type: 'signal/unstable' })
       return
     }
 
-    const match = resolvePitchMatch(stateRef.current, pitchHz)
+    const currentState = stateRef.current
+    const match = resolvePitchMatch(currentState, pitchHz, automaticStringLockRef.current)
+
+    if (currentState.trackingMode === 'automatic') {
+      automaticStringLockRef.current = match.string.id
+    }
 
     dispatch({
       type: 'pitch/matched',
@@ -90,6 +97,7 @@ export function useTunerController(engine?: AudioEngine) {
   }
 
   async function setMode(mode: TunerMode) {
+    automaticStringLockRef.current = null
     dispatch({ type: 'mode/set', mode })
 
     if (mode === 'reference') {
@@ -125,6 +133,7 @@ export function useTunerController(engine?: AudioEngine) {
   }
 
   function setInstrument(instrumentId: InstrumentId) {
+    automaticStringLockRef.current = null
     dispatch({ type: 'instrument/set', instrumentId })
 
     if (stateRef.current.trackingMode === 'manual') {
@@ -141,6 +150,8 @@ export function useTunerController(engine?: AudioEngine) {
   }
 
   function setTrackingMode(trackingMode: TrackingMode) {
+    automaticStringLockRef.current = null
+
     if (trackingMode === 'manual') {
       const currentInstrument = getInstrumentDefinition(stateRef.current.instrumentId)
       const currentString = findStringById(currentInstrument.strings, stateRef.current.activeStringId)
@@ -160,6 +171,7 @@ export function useTunerController(engine?: AudioEngine) {
   }
 
   function selectManualString(stringId: string) {
+    automaticStringLockRef.current = null
     const currentInstrument = getInstrumentDefinition(stateRef.current.instrumentId)
     const string = findStringById(currentInstrument.strings, stringId)
 
@@ -203,24 +215,38 @@ function findStringAcrossInstruments(
   return null
 }
 
-function resolvePitchMatch(state: TunerState, pitchHz: number) {
+function resolvePitchMatch(
+  state: TunerState,
+  pitchHz: number,
+  automaticStringLockId: string | null,
+) {
   const currentInstrument = getInstrumentDefinition(state.instrumentId)
 
   if (state.trackingMode === 'manual') {
     const targetString = findStringById(currentInstrument.strings, state.activeStringId)
 
     if (targetString) {
-      const centsOffset = getCentsOffset(pitchHz, targetString.frequency)
-
-      return {
-        string: targetString,
-        centsOffset,
-        direction: getTuningDirection(centsOffset),
-      }
+      return resolveStringMatch(targetString, pitchHz)
     }
   }
 
+  const lockedString = findStringById(currentInstrument.strings, automaticStringLockId)
+
+  if (lockedString) {
+    return resolveStringMatch(lockedString, pitchHz)
+  }
+
   return resolveNearestString(currentInstrument.strings, pitchHz)
+}
+
+function resolveStringMatch(string: StringDefinition, pitchHz: number) {
+  const centsOffset = getCentsOffset(pitchHz, string.frequency)
+
+  return {
+    string,
+    centsOffset,
+    direction: getTuningDirection(centsOffset),
+  }
 }
 
 function findStringById(

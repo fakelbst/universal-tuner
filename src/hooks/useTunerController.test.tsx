@@ -72,6 +72,43 @@ test('maps live pitch input against the selected instrument', async () => {
   expect(result.current.state.status).toBe('in-tune')
 })
 
+test('keeps automatic tracking locked to one string until the signal drops', async () => {
+  const engine = createFakeEngine()
+  const { result } = renderHook(() => useTunerController(engine))
+
+  await act(async () => {
+    await result.current.enableMicrophone()
+  })
+
+  act(() => {
+    engine.emitPitch(110)
+  })
+
+  expect(result.current.state.activeStringId).toBe('guitar-a2')
+  expect(result.current.state.displayNote).toBe('A2')
+  expect(result.current.state.status).toBe('in-tune')
+
+  act(() => {
+    engine.emitPitch(146.83)
+  })
+
+  expect(result.current.state.activeStringId).toBe('guitar-a2')
+  expect(result.current.state.displayNote).toBe('A2')
+  expect(result.current.state.status).toBe('tune-down')
+
+  act(() => {
+    engine.emitPitch(null)
+  })
+
+  act(() => {
+    engine.emitPitch(146.83)
+  })
+
+  expect(result.current.state.activeStringId).toBe('guitar-d3')
+  expect(result.current.state.displayNote).toBe('D3')
+  expect(result.current.state.status).toBe('in-tune')
+})
+
 test('plays the selected reference note in reference mode', async () => {
   const engine = createFakeEngine()
   const { result } = renderHook(() => useTunerController(engine))
